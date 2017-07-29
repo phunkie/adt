@@ -1,0 +1,12 @@
+{
+    "name": "phunkie/phunkie-adt",
+    "autoload": {
+        "psr-0": {"": "src/"}
+    },
+    "require": {
+        "kahlan/kahlan": "^3.1"
+    },
+    "scripts": {
+        "test": "vendor/bin/kahlan --reporter=verbose"
+    }
+}
