@@ -58,7 +58,7 @@ function orderPizza(Weekday $weekday, Pizza $pizza)
 }
 ```
 
-That's however no way in PHP to guarantee that the interface won't be extended beyond the ones distributed with the
+There is, however, no way in PHP to guarantee that the interface won't be extended beyond the ones distributed with the
 library. Nothing stops a Pluto fan from:
 
 ```php
