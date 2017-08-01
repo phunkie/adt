@@ -2,22 +2,21 @@
 
 namespace Phunkie\ADT;
 
-trait ImmutableSealed
+abstract class ImmutableSealed extends Sealed
 {
-    use Sealed;
-    public function __set($arg, $value)
+    final public function __set($arg, $value)
     {
         if (isset($this->$arg)) {
-            throw new \Error("{$this->type} is immutable");
+            throw new \Error(get_class($this) . " is immutable");
         }
-        throw new \Error("$arg is not a member of {$this->type}");
+        throw new \Error("$arg is not a member of " . get_class($this));
     }
 
-    public function __get($arg)
+    final public function __get($arg)
     {
         if (isset($this->$arg)) {
             return $this->$arg;
         }
-        throw new \Error("$arg is not a member of {$this->type}");
+        throw new \Error("$arg is not a member of " . get_class($this));
     }
 }

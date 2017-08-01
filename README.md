@@ -40,8 +40,8 @@ Finally we could try extending a super class or implementing a common interface.
 ```php
 <?php
 interface Weekday {}
-class Sunday implements Weekday { function __toString() { return 'Sunday'; } }
-class Monday implements Weekday { function __toString() { return 'Monday'; } }
+final class Sunday implements Weekday { }
+final class Monday implements Weekday { }
 //...
 ```
 
@@ -63,7 +63,7 @@ library. Nothing stops a Pluto fan from:
 
 ```php
 <?php
-class Plutoday implements Weekday { function __toString() { return "Plutoday"; } }
+final class Plutoday implements Weekday { }
 ```
 
 And all of a sudden we can now order pizza in weird days. But fear not! Sum types is there to save us from that madness.
@@ -73,7 +73,7 @@ that.
 
 ```php
 <?php
-abstract class Weekday implements TypeConstructor {}
+abstract class Weekday implements TypeConstructor { use SumType; }
 ```
 
 Then we seal it. Let's use `ImmutableSealed` to add immutablity while we are at
@@ -81,14 +81,15 @@ it
 
 ```php
 <?php
-abstract class Weekday implements TypeConstructor { use ImmutableSealed; }
+abstract class Weekday extends ImmutableSealed implements TypeConstructor { use SumType; }
 ```
 
 `ImmutableSealed` requires us to tell what is the types the type constructor can create
 
 ```php
 <?php
-abstract class Weekday implements TypeConstructor { use ImmutableSealed;
+abstract class Weekday extends ImmutableSealed implements TypeConstructor {
+    use SumType;
     const sealedTo = [Sunday::class, /*...*/ Saturday::class];
 }
 ```
@@ -97,17 +98,17 @@ We still need to create the sum types:
 
 ```php
 <?php
-class Sunday extends Weekday { use SumType; const typeConstructor = Weekday::class; }
-class Monday extends Weekday { use SumType; const typeConstructor = Weekday::class; }
+final class Sunday extends Weekday { use SumType; const typeConstructor = Weekday::class; }
+final class Monday extends Weekday { use SumType; const typeConstructor = Weekday::class; }
 //...
-class Saturday extends Weekday { use SumType; const typeConstructor = Weekday::class; }
+final class Saturday extends Weekday { use SumType; const typeConstructor = Weekday::class; }
 ```
 
 If we try to extend `Weekday` outside the seal we get a type error.
 
 ```php
 <?php
-class Plotoday extends Weekday { use SumType; const typeConstructor = Weekday::class; }
+final class Plotoday extends Weekday { use SumType; const typeConstructor = Weekday::class; }
 
 new Plutoday; // results in:
               // TypeError has been thrown with message: "Weekday is sealed and cannot be extended outside seal."

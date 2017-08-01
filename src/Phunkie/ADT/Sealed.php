@@ -2,7 +2,7 @@
 
 namespace Phunkie\ADT;
 
-trait Sealed
+abstract class Sealed
 {
     private $hasAlreadyBeenInstantiated = false;
     final protected function __construct(...$constructionArguments)
@@ -30,7 +30,7 @@ trait Sealed
         return $sumType;
     }
 
-    public function sealedTo(): array
+    final public function sealedTo(): array
     {
         return static::sealedTo;
     }
