@@ -88,9 +88,10 @@ abstract class Weekday extends ImmutableSealed implements TypeConstructor { use 
 
 ```php
 <?php
-abstract class Weekday extends ImmutableSealed implements TypeConstructor {
-    use SumType;
-    const sealedTo = [Sunday::class, /*...*/ Saturday::class];
+abstract class Weekday extends ImmutableSealed implements TypeConstructor, SumTypeTag {
+    const sealedTo = [ Sunday::class, Monday::class, Tuesday::class,
+        Wednesday::class, Thursday::class, Friday::class, Saturday::class];
+    public function __construct() { $this->applySeal(); }
 }
 ```
 
@@ -116,7 +117,7 @@ new Plutoday; // results in:
 
 TODO:
 -----
- - Sum types to provide a mechanism for Pattern Matching to know the cases have all been exhausted in a match.
+ - Exhaustive analysis
  - Generics/Kinds: First order, higher order
  - Implementing Show, Eq, Ord
 

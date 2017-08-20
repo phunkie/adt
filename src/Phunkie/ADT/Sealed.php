@@ -5,7 +5,7 @@ namespace Phunkie\ADT;
 abstract class Sealed
 {
     private $hasAlreadyBeenInstantiated = false;
-    final protected function __construct(...$constructionArguments)
+    final protected function applySeal()
     {
         if ($this->hasAlreadyBeenInstantiated === true) {
             throw new \TypeError(get_class($this) .
@@ -19,15 +19,6 @@ abstract class Sealed
             throw new \TypeError(static::typeConstructor .
                 " is sealed and cannot be extended outside seal.");
         }
-    }
-
-    static public function new(...$args)
-    {
-        $sumType = new static();
-        foreach ($args as $key => $value) {
-            $sumType->$key = $value;
-        }
-        return $sumType;
     }
 
     final public function sealedTo(): array
